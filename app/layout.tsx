@@ -31,6 +31,7 @@ export default function RootLayout({
           async
           defer
         ></script>
+        <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

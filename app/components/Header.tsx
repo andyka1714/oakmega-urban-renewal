@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { jwtDecode } from "jwt-decode";
 
 const UserProfile = ({ profile }) => {
@@ -21,6 +21,7 @@ const LoginButton = ({ handleLogin, platform, profile }) => {
 
 const Header = () => {
   const [googleProfile, setGoogleProfile] = useState(null);
+  const [facebookProfile, setFacebookProfile] = useState(null);
 
   const handleGoogleLogin = () => {
     if (googleProfile) {
@@ -36,6 +37,26 @@ const Header = () => {
     }
   };
 
+  const handleFacebookLogin = () => {
+    FB.login(
+      (response) => {
+        if (response.authResponse) {
+          FB.api('/me', { fields: 'id,name,email,picture' }, (userInfo) => {
+            setFacebookProfile({
+              id: userInfo.id,
+              name: userInfo.name,
+              email: userInfo.email,
+              picture: userInfo.picture.data.url,
+            });
+          });
+        } else {
+          console.error('User cancelled login or did not fully authorize.');
+        }
+      },
+      { scope: 'public_profile,email' }
+    );
+  };
+
   const handleGoogleResponse = (response) => {
     const userInfo = jwtDecode(response.credential);
     setGoogleProfile({
@@ -46,10 +67,17 @@ const Header = () => {
   };
 
   useEffect(() => {
-    console.log(googleProfile);
-  }, [googleProfile]);
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId: '9989369141080048',
+        xfbml: true,
+        version: 'v21.0'
+      })
+    };
+  }, []);
 
-  return <div className="flex items-center justify-end p-2">
+  return <div className="flex items-center justify-end p-2 gap-2">
+    <LoginButton handleLogin={handleFacebookLogin} platform="FB" profile={facebookProfile}/>
     <LoginButton handleLogin={handleGoogleLogin} platform="Google" profile={googleProfile}/>
   </div>;
 }
