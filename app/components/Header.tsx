@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { jwtDecode } from "jwt-decode";
 
 const UserProfile = ({ profile }) => {
