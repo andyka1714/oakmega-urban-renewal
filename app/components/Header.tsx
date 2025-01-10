@@ -76,7 +76,7 @@ const Header = () => {
     };
   }, []);
 
-  return <div className="flex items-center justify-end p-2 gap-2">
+  return <div className="flex items-center justify-end p-2 gap-2 w-full">
     <LoginButton handleLogin={handleFacebookLogin} platform="FB" profile={facebookProfile}/>
     <LoginButton handleLogin={handleGoogleLogin} platform="Google" profile={googleProfile}/>
   </div>;
