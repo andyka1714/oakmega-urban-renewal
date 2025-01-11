@@ -1,7 +1,10 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { jwtDecode } from "jwt-decode";
+import { useSelector, useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { setFacebookProfile, setGoogleProfile } from '../../store/slices/appSlice';
 
 const UserProfile = ({ profile }) => {
   return (<div className="flex items-center">
@@ -20,8 +23,11 @@ const LoginButton = ({ handleLogin, platform, profile }) => {
 }
 
 const Header = () => {
-  const [googleProfile, setGoogleProfile] = useState(null);
-  const [facebookProfile, setFacebookProfile] = useState(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    googleProfile,
+    facebookProfile,
+  } = useSelector((state: RootState) => state.app);
 
   const handleGoogleLogin = () => {
     if (googleProfile) {
@@ -42,12 +48,10 @@ const Header = () => {
       (response) => {
         if (response.authResponse) {
           FB.api('/me', { fields: 'id,name,email,picture' }, (userInfo) => {
-            setFacebookProfile({
-              id: userInfo.id,
+            dispatch(setFacebookProfile({
               name: userInfo.name,
-              email: userInfo.email,
               picture: userInfo.picture.data.url,
-            });
+            }));
           });
         } else {
           console.error('User cancelled login or did not fully authorize.');
@@ -59,11 +63,11 @@ const Header = () => {
 
   const handleGoogleResponse = (response) => {
     const userInfo = jwtDecode(response.credential);
-    setGoogleProfile({
+    dispatch(setGoogleProfile({
       name: userInfo.name,
       email: userInfo.email,
       picture: userInfo.picture,
-    });
+    }));
   };
 
   useEffect(() => {
