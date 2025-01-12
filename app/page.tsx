@@ -14,7 +14,7 @@ const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { urbanRenewalSites } = useSelector((state: RootState) => state.app);
 
-  const userLocation = { lat: 25.061691, lng: 121.4847221 };
+  const userLocation = { lat: 24.9726889, lng: 121.441625 };
 
   useEffect(() => {
     dispatch(fetchUrbanRenewalSitesAsync(userLocation));

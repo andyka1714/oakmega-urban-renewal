@@ -14,16 +14,22 @@ interface UrbanRenewalSite {
   lng: number;
 }
 
+interface PolygonData {
+  positions: [number, number][];
+}
+
 interface AppState {
   googleProfile: UserProfile | null;
   facebookProfile: UserProfile | null;
   urbanRenewalSites: UrbanRenewalSite[];
+  polygonData: PolygonData[];
 }
 
 const initialState: AppState = {
   googleProfile: null,
   facebookProfile: null,
   urbanRenewalSites: [],
+  polygonData: [],
 };
 
 export const fetchUrbanRenewalSitesAsync = createAsyncThunk(
@@ -31,6 +37,16 @@ export const fetchUrbanRenewalSitesAsync = createAsyncThunk(
   async (location: { lat: number; lng: number }) => {
     const response = await axios.post('https://enterprise.oakmega.ai/api/v1/server/xinbei/calc-distance', location);
     return response.data.result;
+  }
+);
+
+export const fetchPolygonDataAsync = createAsyncThunk(
+  'app/fetchPolygonData',
+  async () => {
+    const response = await axios.get('https://enterprise.oakmega.ai/api/v1/server/xinbei/geolocation-json', {
+      params: { directory: 'tucheng.json' },
+    });
+    return response.data.result.features;
   }
 );
 
@@ -49,6 +65,9 @@ const appSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchUrbanRenewalSitesAsync.fulfilled, (state, action) => {
       state.urbanRenewalSites = action.payload;
+    });
+    builder.addCase(fetchPolygonDataAsync.fulfilled, (state, action) => {
+      state.polygonData = action.payload;
     });
   },
 });
