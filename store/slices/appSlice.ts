@@ -30,7 +30,7 @@ export const fetchUrbanRenewalSitesAsync = createAsyncThunk(
   'app/fetchUrbanRenewalSites',
   async (location: { lat: number; lng: number }) => {
     const response = await axios.post('https://enterprise.oakmega.ai/api/v1/server/xinbei/calc-distance', location);
-    return response.data;
+    return response.data.result;
   }
 );
 

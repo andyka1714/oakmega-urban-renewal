@@ -8,6 +8,7 @@ import { fetchUrbanRenewalSitesAsync } from '../store/slices/appSlice';
 
 import Header from "./components/Header";
 import Map from "./components/Map";
+import UrbanRenewalSiteList from "./components/UrbanRenewalSiteList";
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,6 +23,7 @@ const Home = () => {
   return <div className="flex flex-col items-center">
     <Header />
     <Map userLocation={userLocation} />
+    <UrbanRenewalSiteList urbanRenewalSites={urbanRenewalSites} />
   </div>;
 }
 
