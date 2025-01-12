@@ -6,19 +6,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { setFacebookProfile, setGoogleProfile } from '../../store/slices/appSlice';
 
-const UserProfile = ({ profile }) => {
+const UserProfile = ({ profile, platform }) => {
   return (<div className="flex items-center">
-    <img src={profile.picture} alt={profile.name} className="w-8 h-8 rounded-full" />
+    <img src={profile ? profile.picture : `${platform}-logo.png`} alt={platform} className="w-8 h-8 rounded-full" />
     <div className="ml-4">
-      <h1 className="text-lg font-semibold">{profile.name}</h1>
+      <h1 className="text-lg font-semibold">{profile ? profile.name : `Login with ${platform}`}</h1>
     </div>
   </div>);
 };
 
 const LoginButton = ({ handleLogin, platform, profile }) => {
+  console.log('profile', profile);
   return <button className="border-stone-500 border px-2 py-1 rounded-lg h-12 cursor-pointer" onClick={handleLogin}>
-    {profile ? 
-    <UserProfile profile={profile}/> : `Login with ${platform}`}
+    <UserProfile profile={profile} platform={platform}/>
   </button>;
 }
 
