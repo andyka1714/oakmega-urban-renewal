@@ -8,6 +8,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { fetchPolygonDataAsync } from '../../store/slices/appSlice';
 
+
+interface PolygonFeature {
+  properties: {
+    TxtMemo: string;
+    SHAPE_Area: number;
+    分區: string;
+  };
+  geometry: {
+    type: "Polygon";
+    coordinates: number[][][];
+  };
+}
+
 const customMarkerIcon = () =>
   L.icon({
     iconUrl: 'marker.png',
@@ -32,13 +45,16 @@ const Map = ({ userLocation }: { userLocation: { lat: number; lng: number } }) =
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-      {polygonData.map((feature, index) => {
+      {polygonData.map((feature: PolygonFeature, index: number) => {
         // Extract coordinates and convert to Leaflet format
-        const positions = feature.geometry.coordinates[0].map((coord) => [coord[1], coord[0]]);
+        const positions = feature.geometry.coordinates[0].map((coord: number[]) => [
+          coord[1], // Latitude
+          coord[0], // Longitude
+        ]);
         return (
           <Polygon
             key={index}
-            positions={positions}
+            positions={positions as [number, number][]}
             pathOptions={{
               color: "blue", // Polygon border color
               fillColor: "rgba(0, 123, 255, 0.4)", // Fill color
