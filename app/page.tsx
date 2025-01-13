@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useEffect } from 'react';
+import dynamic from "next/dynamic";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../store/store';
 import { fetchUrbanRenewalSitesAsync } from '../store/slices/appSlice';
 
 import Header from "./components/Header";
-import Map from "./components/Map";
+const Map = dynamic(() => import("./components/Map"), { ssr: false });
 import UrbanRenewalSiteList from "./components/UrbanRenewalSiteList";
 
 const Home = () => {
