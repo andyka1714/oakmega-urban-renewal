@@ -42,9 +42,9 @@ interface FacebookUserInfo {
   };
 }
 
-const UserProfile = ({ profile, platform }: {profile: Profile, platform: string}) => {
+const UserProfile = ({ profile, platform }: {profile: Profile | null, platform: string}) => {
   return (<div className="flex items-center">
-    <Image src={profile ? profile.picture : `${platform}-logo.png`} alt={platform} className="w-8 h-8 rounded-full" />
+    <Image src={profile ? profile.picture : `/${platform}-logo.png`} alt={platform} className="w-8 h-8 rounded-full" width={32} height={32} />
     <div className="ml-4">
       <h1 className="text-lg font-semibold">{profile ? profile.name : `Login with ${platform}`}</h1>
     </div>
@@ -53,7 +53,7 @@ const UserProfile = ({ profile, platform }: {profile: Profile, platform: string}
 
 const LoginButton = ({ handleLogin, platform, profile }: LoginButtonProps) => {
   return <button className="border-stone-500 border px-2 py-1 rounded-lg h-12 cursor-pointer" onClick={handleLogin}>
-    {profile && <UserProfile profile={profile} platform={platform}/>}
+    <UserProfile profile={profile} platform={platform}/>
   </button>;
 }
 
@@ -62,7 +62,49 @@ const Header = () => {
   const {
     googleProfile,
     facebookProfile,
-  } = useSelector((state: RootState) => state.app);
+  } = useSelector((state: RootState) => state.app);useEffect(() => {
+    const loadFacebookSDK = () => {
+      return new Promise<void>((resolve) => {
+        if (window.FB) {
+          resolve();
+          return;
+        }
+        const script = document.createElement("script");
+        script.src = "https://connect.facebook.net/en_US/sdk.js";
+        script.async = true;
+        script.defer = true;
+        script.onload = () => {
+          window.fbAsyncInit = () => {
+            FB.init({
+              appId: '9989369141080048',
+              xfbml: true,
+              version: 'v21.0',
+            });
+            resolve();
+          };
+        };
+        document.body.appendChild(script);
+      });
+    };
+
+    const loadGoogleSDK = () => {
+      return new Promise<void>((resolve) => {
+        if (window.google && window.google.accounts) {
+          resolve();
+          return;
+        }
+        const script = document.createElement("script");
+        script.src = "https://accounts.google.com/gsi/client";
+        script.async = true;
+        script.defer = true;
+        script.onload = () => resolve();
+        document.body.appendChild(script);
+      });
+    };
+
+    loadFacebookSDK().catch((err) => console.error("Failed to load Facebook SDK:", err));
+    loadGoogleSDK().catch((err) => console.error("Failed to load Google SDK:", err));
+  }, []);
 
   const handleGoogleLogin = () => {
     if (googleProfile) {
@@ -79,6 +121,10 @@ const Header = () => {
   };
 
   const handleFacebookLogin = () => {
+    if (!window.FB) {
+      console.error("Facebook SDK not loaded");
+      return;
+    }
     FB.login(
       (response: FacebookLoginResponse) => {
         if (response.authResponse) {
@@ -110,16 +156,6 @@ const Header = () => {
       picture: userInfo.picture,
     }));
   };
-
-  useEffect(() => {
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId: '9989369141080048',
-        xfbml: true,
-        version: 'v21.0'
-      })
-    };
-  }, []);
 
   return <div className="flex items-center justify-end p-2 gap-2 w-full">
     <LoginButton handleLogin={handleFacebookLogin} platform="FB" profile={facebookProfile}/>
