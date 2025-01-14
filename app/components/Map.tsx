@@ -8,18 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { fetchPolygonDataAsync } from '../../store/slices/appSlice';
 import MarkerTooltip from './MarkerTooltip';
-
-interface PolygonFeature {
-  properties: {
-    TxtMemo: string;
-    SHAPE_Area: number;
-    分區: string;
-  };
-  geometry: {
-    type: "Polygon";
-    coordinates: number[][][];
-  };
-}
+import type { PolygonFeature } from '../types/map';
 
 const customMarkerIcon = () =>
   L.icon({

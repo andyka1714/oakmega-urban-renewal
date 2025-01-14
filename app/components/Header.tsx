@@ -7,40 +7,7 @@ import Image from "next/image";
 import { AppDispatch, RootState } from '../../store/store';
 import { setFacebookProfile, setGoogleProfile } from '../../store/slices/appSlice';
 
-interface Profile {
-  name: string;
-  email?: string;
-  picture: string;
-}
-
-interface LoginButtonProps {
-  handleLogin: () => void;
-  platform: string;
-  profile: Profile | null;
-}
-
-interface FacebookAuthResponse {
-  accessToken: string;
-  expiresIn: number;
-  signedRequest: string;
-  userID: string;
-}
-
-interface FacebookLoginResponse {
-  authResponse: FacebookAuthResponse | null;
-  status: string;
-}
-
-interface FacebookUserInfo {
-  id: string;
-  name: string;
-  email?: string;
-  picture: {
-    data: {
-      url: string;
-    };
-  };
-}
+import type { FacebookLoginResponse, FacebookUserInfo, LoginButtonProps, Profile } from '../types/oauth';
 
 const UserProfile = ({ profile, platform }: {profile: Profile | null, platform: string}) => {
   return (<div className="flex items-center">

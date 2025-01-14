@@ -1,15 +1,5 @@
 "use client";
-
-interface UrbanRenewalSite {
-  id: number;
-  stop_name: string;
-  name: string;
-  distance: number;
-  latitude: number;
-  longitude: number;
-  radius: number;
-  is_tod: number;
-}
+import type { UrbanRenewalSite } from "../types/urbanRenewalSite";
 
 const UrbanRenewalSiteList = ({ urbanRenewalSites }: { urbanRenewalSites: UrbanRenewalSite[]} ) => {
   return (
