@@ -6,9 +6,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import Image from "next/image";
 import { AppDispatch, RootState } from '../../store/store';
 import { setFacebookProfile, setGoogleProfile } from '../../store/slices/appSlice';
-import { loadFacebookSDK, loadGoogleSDK } from "../utils/sdkLoader";
+import { loadFacebookSDK, loadGoogleSDK } from "../../utils/sdkLoader";
 
-import type { FacebookLoginResponse, FacebookUserInfo, LoginButtonProps, Profile } from '../types/oauth';
+import type { FacebookLoginResponse, FacebookUserInfo, LoginButtonProps, Profile } from '../../types/oauth';
 
 const UserProfile = ({ profile, platform }: {profile: Profile | null, platform: string}) => {
   return (<div className="flex items-center">

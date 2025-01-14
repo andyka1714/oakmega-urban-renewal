@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { fetchPolygonDataAsync } from '../../store/slices/appSlice';
 import MarkerTooltip from './MarkerTooltip';
-import type { PolygonFeature } from '../types/map';
+import type { PolygonFeature } from '../../types/map';
 
 const customMarkerIcon = () =>
   L.icon({

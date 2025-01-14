@@ -1,5 +1,5 @@
 "use client";
-import type { UrbanRenewalSite } from "../types/urbanRenewalSite";
+import type { UrbanRenewalSite } from "../../types/urbanRenewalSite";
 
 const UrbanRenewalSiteList = ({ urbanRenewalSites }: { urbanRenewalSites: UrbanRenewalSite[]} ) => {
   return (
