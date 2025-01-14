@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Image from "next/image";
 import { AppDispatch, RootState } from '../../store/store';
 import { setFacebookProfile, setGoogleProfile } from '../../store/slices/appSlice';
+import { loadFacebookSDK, loadGoogleSDK } from "../utils/sdkLoader";
 
 import type { FacebookLoginResponse, FacebookUserInfo, LoginButtonProps, Profile } from '../types/oauth';
 
@@ -32,47 +33,13 @@ const Header = () => {
   } = useSelector((state: RootState) => state.app);
   
   useEffect(() => {
-    const loadFacebookSDK = () => {
-      return new Promise<void>((resolve) => {
-        if (window.FB) {
-          resolve();
-          return;
-        }
-        const script = document.createElement("script");
-        script.src = "https://connect.facebook.net/en_US/sdk.js";
-        script.async = true;
-        script.defer = true;
-        script.onload = () => {
-          window.fbAsyncInit = () => {
-            FB.init({
-              appId: '9989369141080048',
-              xfbml: true,
-              version: 'v21.0',
-            });
-            resolve();
-          };
-        };
-        document.body.appendChild(script);
-      });
-    };
+    loadFacebookSDK()
+      .then(() => console.log("Facebook SDK loaded successfully"))
+      .catch((err) => console.error("Failed to load Facebook SDK:", err));
 
-    const loadGoogleSDK = () => {
-      return new Promise<void>((resolve) => {
-        if (window.google && window.google.accounts) {
-          resolve();
-          return;
-        }
-        const script = document.createElement("script");
-        script.src = "https://accounts.google.com/gsi/client";
-        script.async = true;
-        script.defer = true;
-        script.onload = () => resolve();
-        document.body.appendChild(script);
-      });
-    };
-
-    loadFacebookSDK().catch((err) => console.error("Failed to load Facebook SDK:", err));
-    loadGoogleSDK().catch((err) => console.error("Failed to load Google SDK:", err));
+    loadGoogleSDK()
+      .then(() => console.log("Google SDK loaded successfully"))
+      .catch((err) => console.error("Failed to load Google SDK:", err));
   }, []);
 
   const handleGoogleLogin = () => {
