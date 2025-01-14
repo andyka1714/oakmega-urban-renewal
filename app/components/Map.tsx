@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { fetchPolygonDataAsync } from '../../store/slices/appSlice';
-
+import MarkerTooltip from './MarkerTooltip';
 
 interface PolygonFeature {
   properties: {
@@ -32,7 +32,9 @@ const customMarkerIcon = () =>
 
 const Map = ({ userLocation }: { userLocation: { lat: number; lng: number } }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { polygonData } = useSelector((state: RootState) => state.app);
+  const {
+    polygonData, 
+  } = useSelector((state: RootState) => state.app);
 
   useEffect(() => {
     dispatch(fetchPolygonDataAsync());
@@ -78,11 +80,7 @@ const Map = ({ userLocation }: { userLocation: { lat: number; lng: number } }) =
         position={[userLocation.lat, userLocation.lng]}
         icon={customMarkerIcon()}
       >
-        <Tooltip direction="top" offset={[0, -30]}>
-          <div>
-            <strong>User Location</strong>
-          </div>
-        </Tooltip>
+        <MarkerTooltip />
       </Marker>
     </MapContainer>
   );

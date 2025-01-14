@@ -44,7 +44,7 @@ interface FacebookUserInfo {
 
 const UserProfile = ({ profile, platform }: {profile: Profile | null, platform: string}) => {
   return (<div className="flex items-center">
-    <Image src={profile ? profile.picture : `/${platform}-logo.png`} alt={platform} className="w-8 h-8 rounded-full" width={32} height={32} />
+    <Image src={profile ? profile.picture : `/${platform}-logo.png`} alt={platform} className="rounded-full" width={32} height={32} />
     <div className="ml-4">
       <h1 className="text-lg font-semibold">{profile ? profile.name : `Login with ${platform}`}</h1>
     </div>
@@ -62,7 +62,9 @@ const Header = () => {
   const {
     googleProfile,
     facebookProfile,
-  } = useSelector((state: RootState) => state.app);useEffect(() => {
+  } = useSelector((state: RootState) => state.app);
+  
+  useEffect(() => {
     const loadFacebookSDK = () => {
       return new Promise<void>((resolve) => {
         if (window.FB) {

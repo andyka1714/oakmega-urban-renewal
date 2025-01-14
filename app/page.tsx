@@ -19,7 +19,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchUrbanRenewalSitesAsync(userLocation));
-  }, [dispatch, userLocation]);
+  }, [dispatch]);
 
   return <div className="flex flex-col items-center">
     <Header />
