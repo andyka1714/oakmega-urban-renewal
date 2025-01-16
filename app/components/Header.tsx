@@ -13,14 +13,14 @@ import type { FacebookLoginResponse, FacebookUserInfo, LoginButtonProps, Profile
 const UserProfile = ({ profile, platform }: {profile: Profile | null, platform: string}) => {
   return (<div className="flex items-center">
     <Image src={profile ? profile.picture : `/${platform}-logo.png`} alt={platform} className="rounded-full" width={32} height={32} />
-    <span className="ml-4 text-md font-semibold">
+    <span className="ml-4 text-sm font-semibold">
       {profile ? profile.name : `Login with ${platform}`}
     </span>
   </div>);
 };
 
 const LoginButton = ({ handleLogin, platform, profile }: LoginButtonProps) => {
-  return <button className="border-stone-500 border px-2 py-1 rounded-lg h-12 cursor-pointer" onClick={handleLogin}>
+  return <button className="w-1/2 md:w-auto border-stone-500 border px-2 py-1 rounded-lg h-12 cursor-pointer" onClick={handleLogin}>
     <UserProfile profile={profile} platform={platform}/>
   </button>;
 }
