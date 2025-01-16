@@ -13,9 +13,9 @@ import type { FacebookLoginResponse, FacebookUserInfo, LoginButtonProps, Profile
 const UserProfile = ({ profile, platform }: {profile: Profile | null, platform: string}) => {
   return (<div className="flex items-center">
     <Image src={profile ? profile.picture : `/${platform}-logo.png`} alt={platform} className="rounded-full" width={32} height={32} />
-    <div className="ml-4">
-      <h1 className="text-lg font-semibold">{profile ? profile.name : `Login with ${platform}`}</h1>
-    </div>
+    <span className="ml-4 text-md font-semibold">
+      {profile ? profile.name : `Login with ${platform}`}
+    </span>
   </div>);
 };
 
@@ -93,7 +93,7 @@ const Header = () => {
     }));
   };
 
-  return <div className="flex items-center justify-end p-2 gap-2 w-full">
+  return <div className="flex items-center justify-center md:justify-end p-2 gap-2 w-full">
     <LoginButton handleLogin={handleFacebookLogin} platform="FB" profile={facebookProfile}/>
     <LoginButton handleLogin={handleGoogleLogin} platform="Google" profile={googleProfile}/>
   </div>;
